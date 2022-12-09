@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineMovieReservationSystem.Data;
 using OnlineMovieReservationSystem.Dtos.Movie;
 using OnlineMovieReservationSystem.Models;
@@ -11,23 +13,80 @@ namespace OnlineMovieReservationSystem.Controllers
     [Route("api/[controller]")]
     public class MovieController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly DataContext _context;
 
-        public MovieController(DataContext context) 
+        public MovieController(IMapper mapper, DataContext context) 
         {
+            _mapper = mapper;
             _context = context;
         }
 
         [HttpGet]
-        public IActionResult GetMovies() 
+        public async Task<ActionResult<ServiceResponse<List<Movie>>>> GetAllMovies() 
         {
-            return Ok(_context.Movies.ToList());
+            var response = new ServiceResponse<List<Movie>>();
+            response.Data = await _context.Movies.ToListAsync();
+
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceResponse<Movie>>> GetSingleMovie(int id)
+        {
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+
+            var response = new ServiceResponse<Movie>();
+            if(movie == null)
+            {
+                response.Data = null;
+                response.Success = false;
+                response.Message = "Movie not found";
+
+                return NotFound(response);
+            }
+            
+            response.Data = movie;
+
+            return Ok(response);
+        }
+
+        public async Task<ActionResult<ServiceResponse<List<MovieDto>>>> AddMovie(MovieDto newMovie)
+        {
+            Movie movie = _mapper.Map<Movie>(newMovie);
+
+            await _context.Movies.AddAsync(movie);
+            await _context.SaveChangesAsync();
+
+            var response = new ServiceResponse<List<MovieDto>>();
+            response.Data = await _context.Movies.Select(m => _mapper.Map<MovieDto>(m)).ToListAsync();
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult AddMovie(MovieDto movie)
-        {
 
+        [HttpDelete]
+        public async Task<ActionResult<ServiceResponse<Movie>>> DeleteMovie(int id)
+        {
+            var response = new ServiceResponse<Movie>();
+
+            var movie = await _context.Movies.FirstAsync(m => m.Id == id);
+
+            if(movie == null)
+            {
+                response.Success = false;
+                response.Message = "Movie not found";
+
+                return NotFound(response);
+            }
+
+            _context.Movies.Remove(movie);
+            await _context.SaveChangesAsync();
+
+            response.Data = movie;
+
+            return Ok(response);
         }
     }
 }
