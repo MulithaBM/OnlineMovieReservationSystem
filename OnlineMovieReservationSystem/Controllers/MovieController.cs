@@ -51,6 +51,7 @@ namespace OnlineMovieReservationSystem.Controllers
             return Ok(response);
         }
 
+        [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<MovieDto>>>> AddMovie(MovieDto newMovie)
         {
             Movie movie = _mapper.Map<Movie>(newMovie);
@@ -63,8 +64,6 @@ namespace OnlineMovieReservationSystem.Controllers
 
             return Ok(response);
         }
-
-        [HttpPost]
 
         [HttpDelete]
         public async Task<ActionResult<ServiceResponse<Movie>>> DeleteMovie(int id)
