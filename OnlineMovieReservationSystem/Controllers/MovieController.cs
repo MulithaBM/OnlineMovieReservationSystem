@@ -54,15 +54,18 @@ namespace OnlineMovieReservationSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<MovieDto>>>> AddMovie(MovieDto newMovie)
+        public async Task<ActionResult<ServiceResponse<List<Movie>>>> AddMovie(MovieDto newMovie)
         {
             Movie movie = _mapper.Map<Movie>(newMovie);
 
             await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
 
-            var response = new ServiceResponse<List<MovieDto>>();
-            response.Data = await _context.Movies.Select(m => _mapper.Map<MovieDto>(m)).ToListAsync();
+            //var response = new ServiceResponse<List<MovieDto>>();
+            var response = new ServiceResponse<List<Movie>>();
+
+            //response.Data = await _context.Movies.Select(m => _mapper.Map<MovieDto>(m)).ToListAsync();
+            response.Data = await _context.Movies.ToListAsync();
 
             return Ok(response);
         }
@@ -86,6 +89,21 @@ namespace OnlineMovieReservationSystem.Controllers
             await _context.SaveChangesAsync();
 
             response.Data = movie;
+
+            return Ok(response);
+        }
+
+        [HttpPost("multiple")]
+        public async Task<ActionResult<ServiceResponse<List<Movie>>>> AddMultipleMovies(List<MovieDto> newMovies)
+        {
+            var response = new ServiceResponse<List<Movie>>();
+
+            var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
+
+            await _context.Movies.AddRangeAsync(movies);
+            await _context.SaveChangesAsync();
+
+            response.Data = await _context.Movies.ToListAsync();
 
             return Ok(response);
         }

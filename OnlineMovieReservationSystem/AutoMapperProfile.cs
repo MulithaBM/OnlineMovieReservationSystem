@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OnlineMovieReservationSystem.Dtos.Movie;
+using OnlineMovieReservationSystem.Dtos.Venue;
 using OnlineMovieReservationSystem.Models;
 
 namespace OnlineMovieReservationSystem
@@ -9,7 +10,7 @@ namespace OnlineMovieReservationSystem
         public AutoMapperProfile()
         {
             CreateMap<MovieDto, Movie>();
-            CreateMap<Movie, MovieDto>();
+            CreateMap<VenueDto, Venue>();
         }
     }
 }

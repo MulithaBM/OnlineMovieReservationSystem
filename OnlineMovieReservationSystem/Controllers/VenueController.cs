@@ -87,5 +87,20 @@ namespace OnlineMovieReservationSystem.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("multiple")]
+        public async Task<ActionResult<ServiceResponse<List<Venue>>>> AddMultipleVenues(List<VenueDto> newVenues)
+        {
+            var response = new ServiceResponse<List<Venue>>();
+
+            var venues = newVenues.Select(v => _mapper.Map<Venue>(v)).ToList();
+
+            await _context.Venues.AddRangeAsync(venues);
+            await _context.SaveChangesAsync();
+
+            response.Data = await _context.Venues.ToListAsync();
+
+            return Ok(response);
+        }
     }
 }

@@ -11,12 +11,10 @@ namespace OnlineMovieReservationSystem.Controllers
     [ApiController]
     public class TimetableController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly DataContext _context;
 
         public TimetableController(IMapper mapper, DataContext context)
         {
-            _mapper = mapper;
             _context = context;
         }
 
