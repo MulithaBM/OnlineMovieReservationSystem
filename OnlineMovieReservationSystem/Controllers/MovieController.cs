@@ -11,7 +11,7 @@ namespace OnlineMovieReservationSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MovieController : Controller
+    public class MovieController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;

@@ -7,7 +7,9 @@ using OnlineMovieReservationSystem.Models;
 
 namespace OnlineMovieReservationSystem.Controllers
 {
-    public class VenueController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class VenueController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
