@@ -28,6 +28,8 @@ namespace OnlineMovieReservationSystem.Controllers
             var response = new ServiceResponse<List<Movie>>();
             response.Data = await _context.Movies.ToListAsync();
 
+            Console.WriteLine("Get Movies");
+
             return Ok(response);
         }
 
