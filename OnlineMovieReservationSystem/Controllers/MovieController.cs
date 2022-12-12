@@ -72,7 +72,7 @@ namespace OnlineMovieReservationSystem.Controllers
         {
             var response = new ServiceResponse<Movie>();
 
-            var movie = await _context.Movies.FirstAsync(m => m.Id == id);
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
 
             if(movie == null)
             {
