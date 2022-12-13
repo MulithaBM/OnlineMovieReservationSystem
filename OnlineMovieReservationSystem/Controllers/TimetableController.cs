@@ -23,7 +23,10 @@ namespace OnlineMovieReservationSystem.Controllers
         {
             var response = new ServiceResponse<List<Timetable>>();
 
-            response.Data = await _context.Timetables.ToListAsync();
+            response.Data = await _context.Timetables
+                .Include(t => t.MovieName)
+                .Include(t => t.VenueName)
+                .ToListAsync();
 
             return Ok(response);
         }
@@ -33,7 +36,10 @@ namespace OnlineMovieReservationSystem.Controllers
         {
             var response = new ServiceResponse<Timetable>();
 
-            var timetable = await _context.Timetables.FirstOrDefaultAsync(t => t.Id == id);
+            var timetable = await _context.Timetables
+                .Include(t => t.MovieName)
+                .Include(t => t.VenueName)
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             if(timetable == null)
             {
@@ -51,10 +57,10 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<Timetable>>>> AddSchedule(TimetableDto newEvent)
         {
-            var movie = await _context.Movies.FirstAsync(m => m.Id == newEvent.MovieId);
-            var venue = await _context.Venues.FirstAsync(v => v.Id == newEvent.VenueId);
+            Movie movie = await _context.Movies.FirstAsync(m => m.Id == newEvent.MovieId);
+            Venue venue = await _context.Venues.FirstAsync(v => v.Id == newEvent.VenueId);
 
-            Timetable timetable = new Timetable
+            Timetable timetable = new()
             {
                 MovieName = movie,
                 VenueName = venue,
@@ -66,6 +72,9 @@ namespace OnlineMovieReservationSystem.Controllers
             var response = new ServiceResponse<List<Timetable>>();
 
             response.Data = await _context.Timetables.ToListAsync();
+
+            Console.WriteLine("Movies");
+            Console.WriteLine(response.Data[0].MovieName.Title);
 
             return Ok(response);
         }

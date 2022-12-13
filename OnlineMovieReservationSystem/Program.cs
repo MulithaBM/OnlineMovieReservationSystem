@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineMovieReservationSystem.Data;
+using System.Configuration;
+using System;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -10,7 +12,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("https://localhost:7172/api/movies");
+            policy.WithOrigins("*");
         });
 });
 
@@ -20,6 +22,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+/*builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.EnableDetailedErrors();
+    options.EnableSensitiveDataLogging();
+
+    //string connection = Configuration.GetConnectionString("DefaultConnection");
+    options.UseNpgsql(@"Server=localhost;Port=5432;Database=OMRS;User Id=postgres;Password=calceyPG");
+ });*/
 
 builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("MovieReservationDb"));
 
