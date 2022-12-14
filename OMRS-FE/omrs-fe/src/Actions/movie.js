@@ -3,11 +3,12 @@ const API = "https://localhost:7172/api/movie";
 export const getMovies = async () => {
     try
     {
-        let response = await fetch(API, {
+        let response = await fetch(`${API}`, {
             method: "GET",
             headers: {
                 Accept: "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Headers": "*"
             }
         });
 
@@ -15,7 +16,6 @@ export const getMovies = async () => {
     }
     catch (err)
     {
-        console.log(123456);
         console.log(err);
     }
 };
