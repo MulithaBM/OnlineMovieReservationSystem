@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OnlineMovieReservationSystem.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineMovieReservationSystem.Dtos.Movie;
 using OnlineMovieReservationSystem.Models;
+using OnlineMovieReservationSystem.Services.MovieService;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,22 +11,22 @@ namespace OnlineMovieReservationSystem.Controllers
     [Route("api/[controller]")]
     public class MovieController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly DataContext _context;
+        private readonly IMovieService _movieService;
 
-        public MovieController(IMapper mapper, DataContext context) 
+        public MovieController(IMovieService movieService) 
         {
-            _mapper = mapper;
-            _context = context;
+            _movieService = movieService;
         }
 
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<Movie>>>> GetAllMovies() 
         {
-            var response = new ServiceResponse<List<Movie>>();
-            response.Data = await _context.Movies.ToListAsync();
+            var response = await _movieService.GetAllMovies();
 
-            //Console.WriteLine("Get Movies");
+            if(response.Data == null)
+            {
+                return NotFound(response);
+            }
 
             return Ok(response);
         }
@@ -36,19 +34,12 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<Movie>>> GetSingleMovie(int id)
         {
-            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            var response = await _movieService.GetMovieById(id);
 
-            var response = new ServiceResponse<Movie>();
-            if(movie == null)
+            if (response.Data == null)
             {
-                response.Data = null;
-                response.Success = false;
-                response.Message = "Movie not found";
-
                 return NotFound(response);
             }
-            
-            response.Data = movie;
 
             return Ok(response);
         }
@@ -56,39 +47,12 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<Movie>>>> AddMovie(MovieDto newMovie)
         {
-            Movie movie = _mapper.Map<Movie>(newMovie);
+            var response = await _movieService.AddMovie(newMovie);
 
-            await _context.Movies.AddAsync(movie);
-            await _context.SaveChangesAsync();
-
-            //var response = new ServiceResponse<List<MovieDto>>();
-            var response = new ServiceResponse<List<Movie>>();
-
-            //response.Data = await _context.Movies.Select(m => _mapper.Map<MovieDto>(m)).ToListAsync();
-            response.Data = await _context.Movies.ToListAsync();
-
-            return Ok(response);
-        }
-
-        [HttpDelete]
-        public async Task<ActionResult<ServiceResponse<Movie>>> DeleteMovie(int id)
-        {
-            var response = new ServiceResponse<Movie>();
-
-            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
-
-            if(movie == null)
+            if (response.Data == null)
             {
-                response.Success = false;
-                response.Message = "Movie not found";
-
-                return NotFound(response);
+                return BadRequest(response);
             }
-
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
-
-            response.Data = movie;
 
             return Ok(response);
         }
@@ -96,14 +60,25 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpPost("multiple")]
         public async Task<ActionResult<ServiceResponse<List<Movie>>>> AddMultipleMovies(List<MovieDto> newMovies)
         {
-            var response = new ServiceResponse<List<Movie>>();
+            var response = await _movieService.AddMultipleMovies(newMovies);
 
-            var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
+            if (response.Data == null)
+            {
+                return BadRequest(response);
+            }
 
-            await _context.Movies.AddRangeAsync(movies);
-            await _context.SaveChangesAsync();
+            return Ok(response);
+        }
 
-            response.Data = await _context.Movies.ToListAsync();
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<Movie>>> DeleteMovie(int id)
+        {
+            var response = await _movieService.DeleteMovie(id);
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
 
             return Ok(response);
         }

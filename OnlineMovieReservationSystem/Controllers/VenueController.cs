@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OnlineMovieReservationSystem.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineMovieReservationSystem.Dtos.Venue;
 using OnlineMovieReservationSystem.Models;
+using OnlineMovieReservationSystem.Services.VenueService;
 
 namespace OnlineMovieReservationSystem.Controllers
 {
@@ -11,41 +9,35 @@ namespace OnlineMovieReservationSystem.Controllers
     [ApiController]
     public class VenueController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly DataContext _context;
+        private readonly IVenueService _venueService;
 
-        public VenueController(IMapper mapper, DataContext context)
+        public VenueController(IVenueService venueService)
         {
-            _mapper = mapper;
-            _context = context;
+            _venueService = venueService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Venue>>>> GetVenues()
+        public async Task<ActionResult<ServiceResponse<List<Venue>>>> GetAllVenues()
         {
-            var response = new ServiceResponse<List<Venue>>();
+            var response = await _venueService.GetAllVenues();
 
-            response.Data = await _context.Venues.ToListAsync();
-
-            return response;
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ServiceResponse<Venue>>> GetVenue(int id)
-        {
-            var venue = await _context.Venues.FirstOrDefaultAsync(v => v.Id == id);
-
-            var response = new ServiceResponse<Venue>();
-            if (venue == null)
+            if(response.Data == null)
             {
-                response.Data = null;
-                response.Success = false;
-                response.Message = "Venue not found";
-
                 return NotFound(response);
             }
 
-            response.Data = venue;
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceResponse<Venue>>> GetSingleVenue(int id)
+        {
+            var response = await _venueService.GetVenueById(id);
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
 
             return Ok(response);
         }
@@ -53,37 +45,12 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<Venue>>> AddVenue(VenueDto newVenue)
         {
-            Venue venue = _mapper.Map<Venue>(newVenue);
+            var response = await _venueService.AddVenue(newVenue);
 
-            await _context.Venues.AddAsync(venue);
-            await _context.SaveChangesAsync();
-
-            var response = new ServiceResponse<List<Venue>>();
-
-            response.Data = await _context.Venues.ToListAsync();
-
-            return Ok(response);
-        }
-
-        [HttpDelete]
-        public async Task<ActionResult<ServiceResponse<Venue>>> DeleteVenue(int id)
-        {
-            var response = new ServiceResponse<Venue>();
-
-            var venue = await _context.Venues.FirstOrDefaultAsync(v => v.Id == id);
-
-            if(venue == null)
+            if (response.Data == null)
             {
-                response.Success = false;
-                response.Message = "Venue not found";
-
-                return NotFound(response);
+                return BadRequest(response);
             }
-
-            _context.Venues.Remove(venue);
-            await _context.SaveChangesAsync();
-
-            response.Data = venue;
 
             return Ok(response);
         }
@@ -91,14 +58,25 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpPost("multiple")]
         public async Task<ActionResult<ServiceResponse<List<Venue>>>> AddMultipleVenues(List<VenueDto> newVenues)
         {
-            var response = new ServiceResponse<List<Venue>>();
+            var response = await _venueService.AddMultipleVenues(newVenues);
 
-            var venues = newVenues.Select(v => _mapper.Map<Venue>(v)).ToList();
+            if (response.Data == null)
+            {
+                return BadRequest(response);
+            }
 
-            await _context.Venues.AddRangeAsync(venues);
-            await _context.SaveChangesAsync();
+            return Ok(response);
+        }
 
-            response.Data = await _context.Venues.ToListAsync();
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<Venue>>> DeleteVenue(int id)
+        {
+            var response = await _venueService.DeleteVenue(id);
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
 
             return Ok(response);
         }

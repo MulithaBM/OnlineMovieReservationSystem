@@ -2,8 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using OnlineMovieReservationSystem.Data;
 using System.Configuration;
 using System;
-
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+using OnlineMovieReservationSystem.Services.MovieService;
+using OnlineMovieReservationSystem.Services.VenueService;
+using OnlineMovieReservationSystem.Services.TimetableService;
+using OnlineMovieReservationSystem.Services.SessionService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +37,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("MovieReservationDb"));
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IVenueService, VenueService>();
+builder.Services.AddScoped<ISessionService, SessionService>();
 
 var app = builder.Build();
 

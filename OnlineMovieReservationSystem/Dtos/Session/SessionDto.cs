@@ -1,6 +1,6 @@
 ﻿namespace OnlineMovieReservationSystem.Dtos.Timetable
 {
-    public class TimetableDto
+    public class SessionDto
     {
         public int MovieId { get; set; }
         public int VenueId { get; set; }
