@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using OnlineMovieReservationSystem.Data;
-using OnlineMovieReservationSystem.Dtos.Venue;
-using OnlineMovieReservationSystem.Models;
+using OnlineMovieReservationSystem.Domain.Models;
+using OnlineMovieReservationSystem.Domain.Services;
+using OnlineMovieReservationSystem.Application.Dtos.Venue;
 
 namespace OnlineMovieReservationSystem.Services.VenueService
 {
@@ -17,7 +18,7 @@ namespace OnlineMovieReservationSystem.Services.VenueService
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<List<Venue>>> AddVenue(VenueDto newVenue)
+        public async Task<ServiceResponse<List<Venue>>> AddVenue(Venue newVenue)
         {
             var response = new ServiceResponse<List<Venue>>();
 
@@ -39,7 +40,7 @@ namespace OnlineMovieReservationSystem.Services.VenueService
             return response;
         }
 
-        public async Task<ServiceResponse<List<Venue>>> AddMultipleVenues(List<VenueDto> newVenues)
+        public async Task<ServiceResponse<List<Venue>>> AddMultipleVenues(List<Venue> newVenues)
         {
             var response = new ServiceResponse<List<Venue>>();
 

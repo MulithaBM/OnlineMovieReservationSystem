@@ -1,4 +1,4 @@
-﻿namespace OnlineMovieReservationSystem.Dtos.Timetable
+﻿namespace OnlineMovieReservationSystem.Application.Dtos.Session
 {
     public class SessionDto
     {
