@@ -9,7 +9,7 @@ const AddMovie = () => {
         director: "",
         cast: "",
         type: "",
-        duration: "",
+        duration: 0,
         releaseDate: ""
     });
 
