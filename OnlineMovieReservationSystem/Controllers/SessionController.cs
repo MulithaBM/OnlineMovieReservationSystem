@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineMovieReservationSystem.Dtos.Timetable;
-using OnlineMovieReservationSystem.Models;
-using OnlineMovieReservationSystem.Services.TimetableService;
+using OnlineMovieReservationSystem.Domain.Models;
+using OnlineMovieReservationSystem.Domain.Services;
+using OnlineMovieReservationSystem.Application.Dtos.Session;
 
 namespace OnlineMovieReservationSystem.Controllers
 {
@@ -45,27 +45,31 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<List<Session>>>> AddSession(SessionDto newSession)
         {
-            var response = await _sessionService.AddSession(newSession);
+            /*var response = await _sessionService.AddSession(newSession);
 
             if (response.Data == null)
             {
                 return BadRequest(response);
             }
 
-            return Ok(response);
+            return Ok(response);*/
+
+            throw new NotImplementedException();
         }
 
         [HttpPost("multiple")]
         public async Task<ActionResult<ServiceResponse<List<Session>>>> AddMultipleSessions(List<SessionDto> newSessions)
         {
-            var response = await _sessionService.AddMultipleSessions(newSessions);
+            /*var response = await _sessionService.AddMultipleSessions(newSessions);
 
             if (response.Data == null)
             {
                 return BadRequest(response);
             }
 
-            return Ok(response);
+            return Ok(response);*/
+
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]

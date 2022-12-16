@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnlineMovieReservationSystem.Dtos.Venue;
-using OnlineMovieReservationSystem.Models;
-using OnlineMovieReservationSystem.Services.VenueService;
+using OnlineMovieReservationSystem.Domain.Models;
+using OnlineMovieReservationSystem.Domain.Services;
+using OnlineMovieReservationSystem.Application.Dtos.Venue;
 
 namespace OnlineMovieReservationSystem.Controllers
 {
@@ -45,27 +45,31 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<Venue>>> AddVenue(VenueDto newVenue)
         {
-            var response = await _venueService.AddVenue(newVenue);
+            /*var response = await _venueService.AddVenue(newVenue);
 
             if (response.Data == null)
             {
                 return BadRequest(response);
             }
+            
+            return Ok(response);*/
 
-            return Ok(response);
+            throw new NotImplementedException();
         }
 
         [HttpPost("multiple")]
         public async Task<ActionResult<ServiceResponse<List<Venue>>>> AddMultipleVenues(List<VenueDto> newVenues)
         {
-            var response = await _venueService.AddMultipleVenues(newVenues);
+            /*var response = await _venueService.AddMultipleVenues(newVenues);
 
             if (response.Data == null)
             {
                 return BadRequest(response);
             }
 
-            return Ok(response);
+            return Ok(response);*/
+
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]

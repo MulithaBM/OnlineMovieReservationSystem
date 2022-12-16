@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using OnlineMovieReservationSystem.Data;
-using OnlineMovieReservationSystem.Dtos.Movie;
-using OnlineMovieReservationSystem.Models;
+using OnlineMovieReservationSystem.Domain.Models;
+using OnlineMovieReservationSystem.Domain.Services;
 
 namespace OnlineMovieReservationSystem.Services.MovieService
 {
@@ -17,15 +17,16 @@ namespace OnlineMovieReservationSystem.Services.MovieService
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<List<Movie>>> AddMovie(MovieDto newMovie)
+        public async Task<ServiceResponse<List<Movie>>> AddMovie(Movie newMovie)
         {
             var response = new ServiceResponse<List<Movie>>();
  
             try
             {
-                var movie = _mapper.Map<Movie>(newMovie);
+                //var movie = _mapper.Map<Movie>(newMovie);
+                //await _context.Movies.AddAsync(movie);
 
-                await _context.Movies.AddAsync(movie);
+                await _context.Movies.AddAsync(newMovie);
                 await _context.SaveChangesAsync();
 
                 response.Data = await _context.Movies.ToListAsync();
@@ -39,15 +40,16 @@ namespace OnlineMovieReservationSystem.Services.MovieService
             return response;
         }
 
-        public async Task<ServiceResponse<List<Movie>>> AddMultipleMovies(List<MovieDto> newMovies)
+        public async Task<ServiceResponse<List<Movie>>> AddMultipleMovies(List<Movie> newMovies)
         {
             var response = new ServiceResponse<List<Movie>>();
 
             try
             {
-                var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
+                //var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
+                //await _context.Movies.AddRangeAsync(movies);
 
-                await _context.Movies.AddRangeAsync(movies);
+                await _context.Movies.AddRangeAsync(newMovies);
                 await _context.SaveChangesAsync();
 
                 response.Data = await _context.Movies.ToListAsync();

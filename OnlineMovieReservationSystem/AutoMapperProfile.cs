@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using OnlineMovieReservationSystem.Dtos.Movie;
-using OnlineMovieReservationSystem.Dtos.Venue;
-using OnlineMovieReservationSystem.Models;
+using OnlineMovieReservationSystem.Domain.Models;
+using OnlineMovieReservationSystem.Application.Dtos.Movie;
+using OnlineMovieReservationSystem.Application.Dtos.Venue;
+using OnlineMovieReservationSystem.Application.Commands.MovieCommands;
 
 namespace OnlineMovieReservationSystem
 {
