@@ -6,6 +6,7 @@ using OnlineMovieReservationSystem.Services.MovieService;
 using OnlineMovieReservationSystem.Services.VenueService;
 using OnlineMovieReservationSystem.Services.TimetableService;
 using OnlineMovieReservationSystem.Services.SessionService;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddMediatR(typeof(Program).Assembly);
 
 /*builder.Services.AddDbContext<DataContext>(options =>
 {

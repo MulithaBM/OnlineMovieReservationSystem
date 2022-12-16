@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using OnlineMovieReservationSystem.Dtos.Movie;
 using OnlineMovieReservationSystem.Models;
+using OnlineMovieReservationSystem.Queries.MovieQueries;
 using OnlineMovieReservationSystem.Services.MovieService;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,16 +14,18 @@ namespace OnlineMovieReservationSystem.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly IMediator _mediator;
 
-        public MovieController(IMovieService movieService) 
+        public MovieController(IMovieService movieService, IMediator mediator) 
         {
             _movieService = movieService;
+            _mediator = mediator;
         }
 
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<Movie>>>> GetAllMovies() 
         {
-            var response = await _movieService.GetAllMovies();
+            var response = await _mediator.Send(new GetMovieListQuery());
 
             if(response.Data == null)
             {
