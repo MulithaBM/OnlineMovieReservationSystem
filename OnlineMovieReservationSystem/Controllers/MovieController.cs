@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineMovieReservationSystem.Application.Queries.MovieQueries;
 using OnlineMovieReservationSystem.Domain.Models;
-using OnlineMovieReservationSystem.Domain.Services;
 using OnlineMovieReservationSystem.Domain.Dtos.Movie;
 using OnlineMovieReservationSystem.Application.Commands.MovieCommands;
 
@@ -14,12 +13,10 @@ namespace OnlineMovieReservationSystem.Controllers
     [Route("api/[controller]")]
     public class MovieController : ControllerBase
     {
-        private readonly IMovieService _movieService;
         private readonly IMediator _mediator;
 
-        public MovieController(IMovieService movieService, IMediator mediator) 
+        public MovieController(IMediator mediator) 
         {
-            _movieService = movieService;
             _mediator = mediator;
         }
 
