@@ -1,89 +1,88 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnlineMovieReservationSystem.Data;
-using OnlineMovieReservationSystem.Models;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using OnlineMovieReservationSystem.Application.Queries.MovieQueries;
+using OnlineMovieReservationSystem.Domain.Models;
+using OnlineMovieReservationSystem.Domain.Dtos.Movie;
+using OnlineMovieReservationSystem.Application.Commands.MovieCommands;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace OnlineMovieReservationSystem.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class MovieController : ControllerBase
     {
-        private MovieDB movieDB = new();
+        private readonly IMediator _mediator;
 
-        // GET: api/<MovieController>
+        public MovieController(IMediator mediator) 
+        {
+            _mediator = mediator;
+        }
+
         [HttpGet]
-        public ServiceResponse<List<Movie>> Get()
+        public async Task<ActionResult<ServiceResponse<List<Movie>>>> GetAllMovies() 
         {
-            var response = new ServiceResponse<List<Movie>>();
+            var response = await _mediator.Send(new GetMovieListQuery());
 
-            response.Data = movieDB.GetAllMovies();
+            if(response.Data == null)
+            {
+                return NotFound(response);
+            }
 
-            return response;
+            return Ok(response);
         }
 
-        // GET api/<MovieController>/1
         [HttpGet("{id}")]
-        public ServiceResponse<Movie> Get(int id)
+        public async Task<ActionResult<ServiceResponse<Movie>>> GetSingleMovie(int id)
         {
-            var response = new ServiceResponse<Movie>();
-            try
-            {
-                Movie movie = movieDB.GetSingleMovie(id);
+            var response = await _mediator.Send(new GetMovieByIdQuery(id));
 
-                if(movie == null)
-                {
-                    response.Data = null;
-                    response.Success= false;
-                    response.Message = "Movie not found";
-                }
-                else
-                {
-                    response.Data = movie;
-                }
-            }
-            catch (Exception e)
+            if (response.Data == null)
             {
-                response.Success = false;
-                response.Message = e.Message;
+                return NotFound(response);
             }
 
-            return response;
+            return Ok(response);
         }
 
-        // POST api/<MovieController>
         [HttpPost]
-        public ServiceResponse<List<Movie>> Post(Movie movie)
+        public async Task<ActionResult<ServiceResponse<List<Movie>>>> AddMovie(MovieDto newMovie)
         {
-            Console.WriteLine("Add movie");
-            Console.WriteLine(movie.Name);
-            var response = new ServiceResponse<List<Movie>>();
+            var response = await _mediator.Send(new AddMovieCommand(newMovie));
 
-            try
+            if (response.Data == null)
             {
-                response.Data = movieDB.AddMovie(movie);
-            }
-            catch (Exception e)
-            {
-                response.Success = false;
-                response.Message = e.Message;
+                return BadRequest(response);
             }
 
-            return response;
+            return Ok(response);
         }
 
-        // PUT api/<MovieController>/1
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("multiple")]
+        public async Task<ActionResult<ServiceResponse<List<Movie>>>> AddMultipleMovies(List<MovieDto> newMovies)
         {
+            var response = await _mediator.Send(new AddMultipleMoviesCommand(newMovies));
+
+            if (response.Data == null)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
         }
 
-        // DELETE api/<MovieController>/5
-        //[HttpDelete("{id}")]
-        /*public List<Movie> Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<Movie>>> DeleteMovie(int id)
         {
-            
-        }*/
+            var response = await _mediator.Send(new DeleteMovieCommand(id));
+
+            if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
     }
 }
