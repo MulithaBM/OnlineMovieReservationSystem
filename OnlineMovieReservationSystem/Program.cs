@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using OnlineMovieReservationSystem.Application.Services.MovieService;
-using OnlineMovieReservationSystem.Application.Services.VenueService;
-using OnlineMovieReservationSystem.Application.Services.SessionService;
 using MediatR;
 using OnlineMovieReservationSystem.Domain.Services;
 using OnlineMovieReservationSystem.Application;
 using OnlineMovieReservationSystem.Application.Data;
+using OnlineMovieReservationSystem.Application.Services.MovieService;
+using OnlineMovieReservationSystem.Application.Services.SessionService;
+using OnlineMovieReservationSystem.Application.Services.VenueService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +21,9 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediatR(typeof(MediatorEntryPoint).Assembly);
 
@@ -28,7 +31,6 @@ builder.Services.AddMediatR(typeof(MediatorEntryPoint).Assembly);
 {
     options.EnableDetailedErrors();
     options.EnableSensitiveDataLogging();
-
     //string connection = Configuration.GetConnectionString("DefaultConnection");
     options.UseNpgsql(@"Server=localhost;Port=5432;Database=OMRS;User Id=postgres;Password=calceyPG");
  });*/
@@ -44,11 +46,10 @@ builder.Services.AddScoped<ISessionService, SessionService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (builder.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
-    //app.UseSwagger();
-    //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi v1"));
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
