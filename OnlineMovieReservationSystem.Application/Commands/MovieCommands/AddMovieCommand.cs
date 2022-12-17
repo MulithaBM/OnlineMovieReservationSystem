@@ -6,8 +6,6 @@ namespace OnlineMovieReservationSystem.Application.Commands.MovieCommands
 {
     public record AddMovieCommand(MovieDto Movie) : IRequest<ServiceResponse<List<Movie>>>;
 
-    //string Title, string Destination, string Director, string Cast, string Type, int Duration, string ReleaseDate
-
     //public class AddMovieCommand : IRequest<List<Movie>>
     //{
     //    public string Title { get; set; }

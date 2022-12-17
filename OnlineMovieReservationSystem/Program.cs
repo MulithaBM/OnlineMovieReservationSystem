@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using OnlineMovieReservationSystem.Services.MovieService;
-using OnlineMovieReservationSystem.Services.VenueService;
-using OnlineMovieReservationSystem.Services.SessionService;
+using OnlineMovieReservationSystem.Application.Services.MovieService;
+using OnlineMovieReservationSystem.Application.Services.VenueService;
+using OnlineMovieReservationSystem.Application.Services.SessionService;
 using MediatR;
 using OnlineMovieReservationSystem.Domain.Services;
 using OnlineMovieReservationSystem.Application;

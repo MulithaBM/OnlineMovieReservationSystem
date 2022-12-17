@@ -4,7 +4,7 @@ using OnlineMovieReservationSystem.Domain.Dtos.Session;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
 
-namespace OnlineMovieReservationSystem.Services.SessionService
+namespace OnlineMovieReservationSystem.Application.Services.SessionService
 {
     public class SessionService : ISessionService
     {
@@ -14,6 +14,67 @@ namespace OnlineMovieReservationSystem.Services.SessionService
         {
             _context = context;
         }
+
+        public async Task<ServiceResponse<List<Session>>> GetAllSessions()
+        {
+            var response = new ServiceResponse<List<Session>>();
+
+            try
+            {
+                var sessions = await _context.Sessions
+                    .Include(s => s.Movie)
+                    .Include(s => s.Venue)
+                    .ToListAsync();
+
+                if (!sessions.Any())
+                {
+                    response.Success = false;
+                    response.Message = "No sessions available";
+
+                    return response;
+                }
+
+                response.Data = sessions;
+            }
+            catch (Exception e)
+            {
+                response.Success = false;
+                response.Message = e.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<Session>> GetSessionById(int id)
+        {
+            var response = new ServiceResponse<Session>();
+
+            try
+            {
+                var session = await _context.Sessions
+                    .Include(s => s.Movie)
+                    .Include(s => s.Venue)
+                    .FirstOrDefaultAsync(s => s.Id == id);
+
+                if (session == null)
+                {
+                    response.Success = false;
+                    response.Message = "Session not found";
+
+                    return response;
+                }
+
+                response.Data = session;
+            }
+            catch (Exception e)
+            {
+                response.Success = false;
+                response.Message = e.Message;
+            }
+
+            return response;
+        }
+
         public async Task<ServiceResponse<List<Session>>> AddSession(SessionDto newSession)
         {
             var response = new ServiceResponse<List<Session>>();
@@ -32,7 +93,10 @@ namespace OnlineMovieReservationSystem.Services.SessionService
                 await _context.Sessions.AddAsync(session);
                 await _context.SaveChangesAsync();
 
-                response.Data = await _context.Sessions.ToListAsync();
+                response.Data = await _context.Sessions
+                    .Include(s => s.Movie)
+                    .Include(s => s.Venue)
+                    .ToListAsync();
             }
             catch (Exception e)
             {
@@ -68,7 +132,10 @@ namespace OnlineMovieReservationSystem.Services.SessionService
                 await _context.Sessions.AddRangeAsync(sessions);
                 await _context.SaveChangesAsync();
 
-                response.Data = await _context.Sessions.ToListAsync();
+                response.Data = await _context.Sessions
+                    .Include(s => s.Movie)
+                    .Include(s => s.Venue)
+                    .ToListAsync();
             }
             catch (Exception e)
             {
@@ -85,7 +152,10 @@ namespace OnlineMovieReservationSystem.Services.SessionService
 
             try
             {
-                var session = await _context.Sessions.FirstOrDefaultAsync(s => s.Id == id);
+                var session = await _context.Sessions
+                    .Include(s => s.Movie)
+                    .Include(s => s.Venue)
+                    .FirstOrDefaultAsync(s => s.Id == id);
 
                 if(session == null)
                 {
@@ -97,60 +167,6 @@ namespace OnlineMovieReservationSystem.Services.SessionService
 
                 _context.Sessions.Remove(session);
                 await _context.SaveChangesAsync();
-
-                response.Data = session;
-            }
-            catch (Exception e)
-            {
-                response.Success = false;
-                response.Message = e.Message;
-            }
-
-            return response;
-        }
-
-        public async Task<ServiceResponse<List<Session>>> GetAllSessions()
-        {
-            var response = new ServiceResponse<List<Session>>();
-
-            try
-            {
-                var sessions = await _context.Sessions.ToListAsync();
-
-                if(!sessions.Any())
-                {
-                    response.Success = false;
-                    response.Message = "No sessions available";
-
-                    return response;
-                }
-
-                response.Data = sessions;
-            }
-            catch (Exception e)
-            {
-                response.Success = false;
-                response.Message = e.Message;
-            }
-
-            return response;
-        }
-
-        public async Task<ServiceResponse<Session>> GetSessionById(int id)
-        {
-            var response = new ServiceResponse<Session>();
-
-            try
-            {
-                var session = await _context.Sessions.FirstOrDefaultAsync(s => s.Id == id);
-
-                if(session == null)
-                {
-                    response.Success = false;
-                    response.Message = "Session not found";
-
-                    return response;
-                }
 
                 response.Data = session;
             }

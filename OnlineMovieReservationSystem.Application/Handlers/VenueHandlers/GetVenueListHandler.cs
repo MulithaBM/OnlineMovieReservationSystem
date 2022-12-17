@@ -2,11 +2,6 @@
 using OnlineMovieReservationSystem.Application.Queries.VenueQueries;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineMovieReservationSystem.Application.Handlers.VenueHandlers
 {

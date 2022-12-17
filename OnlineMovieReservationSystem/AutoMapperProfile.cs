@@ -2,7 +2,6 @@
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Dtos.Movie;
 using OnlineMovieReservationSystem.Domain.Dtos.Venue;
-using OnlineMovieReservationSystem.Application.Commands.MovieCommands;
 
 namespace OnlineMovieReservationSystem
 {

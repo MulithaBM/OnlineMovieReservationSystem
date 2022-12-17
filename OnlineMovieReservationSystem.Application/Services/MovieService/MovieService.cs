@@ -5,7 +5,7 @@ using OnlineMovieReservationSystem.Domain.Dtos.Movie;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
 
-namespace OnlineMovieReservationSystem.Services.MovieService
+namespace OnlineMovieReservationSystem.Application.Services.MovieService
 {
     public class MovieService : IMovieService
     {
@@ -18,6 +18,60 @@ namespace OnlineMovieReservationSystem.Services.MovieService
             _mapper = mapper;
         }
 
+        public async Task<ServiceResponse<List<Movie>>> GetAllMovies()
+        {
+            var response = new ServiceResponse<List<Movie>>();
+
+            try
+            {
+                var movies = await _context.Movies.ToListAsync();
+
+                if (!movies.Any())
+                {
+                    response.Success = false;
+                    response.Message = "No movies available";
+
+                    return response;
+                }
+
+                response.Data = movies;
+            }
+            catch (Exception e)
+            {
+                response.Success = false;
+                response.Message = e.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<Movie>> GetMovieById(int id)
+        {
+            var response = new ServiceResponse<Movie>();
+
+            try
+            {
+                var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+
+                if (movie == null)
+                {
+                    response.Success = false;
+                    response.Message = "Movie not found";
+
+                    return response;
+                }
+
+                response.Data = movie;
+            }
+            catch (Exception e)
+            {
+                response.Success = false;
+                response.Message = e.Message;
+            }
+
+            return response;
+        }
+
         public async Task<ServiceResponse<List<Movie>>> AddMovie(MovieDto newMovie)
         {
             var response = new ServiceResponse<List<Movie>>();
@@ -28,9 +82,6 @@ namespace OnlineMovieReservationSystem.Services.MovieService
                 
                 await _context.Movies.AddAsync(movie);
                 await _context.SaveChangesAsync();
-
-                //await _context.Movies.AddAsync(newMovie);
-                //await _context.SaveChangesAsync();
 
                 response.Data = await _context.Movies.ToListAsync();
 
@@ -54,9 +105,6 @@ namespace OnlineMovieReservationSystem.Services.MovieService
                 
                 await _context.Movies.AddRangeAsync(movies);
                 await _context.SaveChangesAsync();
-
-                //await _context.Movies.AddRangeAsync(newMovies);
-                //await _context.SaveChangesAsync();
 
                 response.Data = await _context.Movies.ToListAsync();
             }
@@ -87,60 +135,6 @@ namespace OnlineMovieReservationSystem.Services.MovieService
 
                 _context.Movies.Remove(movie);
                 await _context.SaveChangesAsync();
-
-                response.Data = movie;
-            }
-            catch (Exception e)
-            {
-                response.Success = false;
-                response.Message = e.Message;
-            }
-
-            return response;
-        }
-
-        public async Task<ServiceResponse<List<Movie>>> GetAllMovies()
-        {
-            var response = new ServiceResponse<List<Movie>>();
-
-            try
-            {
-                var movies = await _context.Movies.ToListAsync();
-
-                if(!movies.Any())
-                {
-                    response.Success = false;
-                    response.Message = "No movies available";
-
-                    return response;
-                }
-                
-                response.Data = movies;
-            }
-            catch (Exception e)
-            {
-                response.Success = false;
-                response.Message = e.Message;
-            }
-
-            return response;
-        }
-
-        public async Task<ServiceResponse<Movie>> GetMovieById(int id)
-        {
-            var response = new ServiceResponse<Movie>();
-
-            try
-            {
-                var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
-
-                if(movie == null)
-                {
-                    response.Success = false;
-                    response.Message = "Movie not found";
-
-                    return response;
-                }
 
                 response.Data = movie;
             }
