@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
-using OnlineMovieReservationSystem.Application.Dtos.Session;
+using OnlineMovieReservationSystem.Domain.Dtos.Session;
 
 namespace OnlineMovieReservationSystem.Controllers
 {

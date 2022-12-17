@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using OnlineMovieReservationSystem.Data;
+using OnlineMovieReservationSystem.Application.Data;
+using OnlineMovieReservationSystem.Domain.Dtos.Movie;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
 
@@ -17,19 +18,20 @@ namespace OnlineMovieReservationSystem.Services.MovieService
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<List<Movie>>> AddMovie(Movie newMovie)
+        public async Task<ServiceResponse<List<Movie>>> AddMovie(MovieDto newMovie)
         {
             var response = new ServiceResponse<List<Movie>>();
  
             try
             {
-                //var movie = _mapper.Map<Movie>(newMovie);
-                //await _context.Movies.AddAsync(movie);
+                var movie = _mapper.Map<Movie>(newMovie);
+                await _context.Movies.AddAsync(movie);
 
-                await _context.Movies.AddAsync(newMovie);
-                await _context.SaveChangesAsync();
+                //await _context.Movies.AddAsync(newMovie);
+                //await _context.SaveChangesAsync();
 
                 response.Data = await _context.Movies.ToListAsync();
+
             }
             catch (Exception e)
             {
@@ -40,17 +42,17 @@ namespace OnlineMovieReservationSystem.Services.MovieService
             return response;
         }
 
-        public async Task<ServiceResponse<List<Movie>>> AddMultipleMovies(List<Movie> newMovies)
+        public async Task<ServiceResponse<List<Movie>>> AddMultipleMovies(List<MovieDto> newMovies)
         {
             var response = new ServiceResponse<List<Movie>>();
 
             try
             {
-                //var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
-                //await _context.Movies.AddRangeAsync(movies);
+                var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
+                await _context.Movies.AddRangeAsync(movies);
 
-                await _context.Movies.AddRangeAsync(newMovies);
-                await _context.SaveChangesAsync();
+                //await _context.Movies.AddRangeAsync(newMovies);
+                //await _context.SaveChangesAsync();
 
                 response.Data = await _context.Movies.ToListAsync();
             }

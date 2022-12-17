@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OnlineMovieReservationSystem.Data;
+using OnlineMovieReservationSystem.Application.Data;
+using OnlineMovieReservationSystem.Domain.Dtos.Session;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
 
@@ -13,14 +14,14 @@ namespace OnlineMovieReservationSystem.Services.SessionService
         {
             _context = context;
         }
-        public async Task<ServiceResponse<List<Session>>> AddSession(Session newSession)
+        public async Task<ServiceResponse<List<Session>>> AddSession(SessionDto newSession)
         {
             var response = new ServiceResponse<List<Session>>();
 
             try
             {
-                var movie = await _context.Movies.FirstAsync(m => m.Id == newSession.Movie.Id);
-                var venue = await _context.Venues.FirstAsync(v => v.Id == newSession.Venue.Id);
+                var movie = await _context.Movies.FirstAsync(m => m.Id == newSession.MovieId);
+                var venue = await _context.Venues.FirstAsync(v => v.Id == newSession.VenueId);
 
                 Session session = new()
                 {
@@ -42,7 +43,7 @@ namespace OnlineMovieReservationSystem.Services.SessionService
             return response;
         }
 
-        public async Task<ServiceResponse<List<Session>>> AddMultipleSessions(List<Session> newSessions)
+        public async Task<ServiceResponse<List<Session>>> AddMultipleSessions(List<SessionDto> newSessions)
         {
             var response = new ServiceResponse<List<Session>>();
 
@@ -52,8 +53,8 @@ namespace OnlineMovieReservationSystem.Services.SessionService
 
                 foreach (var newSession in newSessions)
                 {
-                    var movie = await _context.Movies.FirstAsync(m => m.Id == newSession.Movie.Id);
-                    var venue = await _context.Venues.FirstAsync(v => v.Id == newSession.Venue.Id);
+                    var movie = await _context.Movies.FirstAsync(m => m.Id == newSession.MovieId);
+                    var venue = await _context.Venues.FirstAsync(v => v.Id == newSession.VenueId);
 
                     Session session = new()
                     {

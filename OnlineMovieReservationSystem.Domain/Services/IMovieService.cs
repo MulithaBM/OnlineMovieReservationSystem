@@ -1,4 +1,5 @@
-﻿using OnlineMovieReservationSystem.Domain.Models;
+﻿using OnlineMovieReservationSystem.Domain.Dtos.Movie;
+using OnlineMovieReservationSystem.Domain.Models;
 
 namespace OnlineMovieReservationSystem.Domain.Services
 {
@@ -6,8 +7,8 @@ namespace OnlineMovieReservationSystem.Domain.Services
     {
         Task<ServiceResponse<List<Movie>>> GetAllMovies();
         Task<ServiceResponse<Movie>> GetMovieById(int id);
-        Task<ServiceResponse<List<Movie>>> AddMovie(Movie newMovie);
+        Task<ServiceResponse<List<Movie>>> AddMovie(MovieDto newMovie);
         Task<ServiceResponse<Movie>> DeleteMovie(int id);
-        Task<ServiceResponse<List<Movie>>> AddMultipleMovies(List<Movie> newMovies);
+        Task<ServiceResponse<List<Movie>>> AddMultipleMovies(List<MovieDto> newMovies);
     }
 }

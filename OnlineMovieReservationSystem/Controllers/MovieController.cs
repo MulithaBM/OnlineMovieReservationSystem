@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineMovieReservationSystem.Application.Queries.MovieQueries;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
-using OnlineMovieReservationSystem.Application.Dtos.Movie;
+using OnlineMovieReservationSystem.Domain.Dtos.Movie;
 using OnlineMovieReservationSystem.Application.Commands.MovieCommands;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

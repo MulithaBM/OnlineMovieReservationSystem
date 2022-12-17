@@ -1,4 +1,5 @@
-﻿using OnlineMovieReservationSystem.Domain.Models;
+﻿using OnlineMovieReservationSystem.Domain.Dtos.Session;
+using OnlineMovieReservationSystem.Domain.Models;
 
 namespace OnlineMovieReservationSystem.Domain.Services
 {
@@ -6,8 +7,8 @@ namespace OnlineMovieReservationSystem.Domain.Services
     {
         Task<ServiceResponse<List<Session>>> GetAllSessions();
         Task<ServiceResponse<Session>> GetSessionById(int id);
-        Task<ServiceResponse<List<Session>>> AddSession(Session newSession);
+        Task<ServiceResponse<List<Session>>> AddSession(SessionDto newSession);
         Task<ServiceResponse<Session>> DeleteSession(int id);
-        Task<ServiceResponse<List<Session>>> AddMultipleSessions(List<Session> newSessions);
+        Task<ServiceResponse<List<Session>>> AddMultipleSessions(List<SessionDto> newSessions);
     }
 }

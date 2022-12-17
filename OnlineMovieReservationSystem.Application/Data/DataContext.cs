@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineMovieReservationSystem.Domain.Models;
 
-namespace OnlineMovieReservationSystem.Data
+namespace OnlineMovieReservationSystem.Application.Data
 {
     public class DataContext : DbContext
     {

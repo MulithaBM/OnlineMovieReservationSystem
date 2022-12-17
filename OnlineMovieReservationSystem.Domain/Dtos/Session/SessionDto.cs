@@ -1,4 +1,4 @@
-﻿namespace OnlineMovieReservationSystem.Application.Dtos.Session
+﻿namespace OnlineMovieReservationSystem.Domain.Dtos.Session
 {
     public class SessionDto
     {

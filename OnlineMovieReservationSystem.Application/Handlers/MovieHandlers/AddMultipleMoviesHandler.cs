@@ -9,19 +9,15 @@ namespace OnlineMovieReservationSystem.Application.Handlers.MovieHandlers
     public class AddMultipleMoviesHandler : IRequestHandler<AddMultipleMoviesCommand, ServiceResponse<List<Movie>>>
     {
         private readonly IMovieService _movieService;
-        private readonly IMapper _mapper;
 
-        public AddMultipleMoviesHandler(IMovieService movieService, IMapper mapper)
+        public AddMultipleMoviesHandler(IMovieService movieService)
         {
             _movieService = movieService;
-            _mapper = mapper;
         }
 
         public async Task<ServiceResponse<List<Movie>>> Handle(AddMultipleMoviesCommand request, CancellationToken cancellationToken)
         {
-            var movies = request.Movies.Select(m => _mapper.Map<Movie>(m)).ToList();
-
-            return await _movieService.AddMultipleMovies(movies);
+            return await _movieService.AddMultipleMovies(request.Movies);
         }
     }
 }

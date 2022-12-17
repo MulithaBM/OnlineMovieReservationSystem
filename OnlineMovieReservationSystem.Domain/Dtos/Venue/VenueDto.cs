@@ -1,4 +1,4 @@
-﻿namespace OnlineMovieReservationSystem.Application.Dtos.Venue
+﻿namespace OnlineMovieReservationSystem.Domain.Dtos.Venue
 {
     public class VenueDto
     {

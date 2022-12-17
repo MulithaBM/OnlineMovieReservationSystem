@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using OnlineMovieReservationSystem.Data;
 using OnlineMovieReservationSystem.Services.MovieService;
 using OnlineMovieReservationSystem.Services.VenueService;
 using OnlineMovieReservationSystem.Services.SessionService;
 using MediatR;
 using OnlineMovieReservationSystem.Domain.Services;
 using OnlineMovieReservationSystem.Application;
+using OnlineMovieReservationSystem.Application.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
