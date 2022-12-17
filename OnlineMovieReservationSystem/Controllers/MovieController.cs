@@ -78,7 +78,7 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<Movie>>> DeleteMovie(int id)
         {
-            var response = await _movieService.DeleteMovie(id);
+            var response = await _mediator.Send(new DeleteMovieCommand(id));
 
             if (response.Data == null)
             {

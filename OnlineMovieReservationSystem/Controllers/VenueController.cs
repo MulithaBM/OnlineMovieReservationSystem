@@ -2,6 +2,9 @@
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
 using OnlineMovieReservationSystem.Domain.Dtos.Venue;
+using MediatR;
+using OnlineMovieReservationSystem.Application.Queries.VenueQueries;
+using OnlineMovieReservationSystem.Application.Commands.VenueCommands;
 
 namespace OnlineMovieReservationSystem.Controllers
 {
@@ -9,17 +12,19 @@ namespace OnlineMovieReservationSystem.Controllers
     [ApiController]
     public class VenueController : ControllerBase
     {
+        private readonly IMediator _mediator;
         private readonly IVenueService _venueService;
 
-        public VenueController(IVenueService venueService)
+        public VenueController(IMediator mediator, IVenueService venueService)
         {
+            _mediator = mediator;
             _venueService = venueService;
         }
 
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<Venue>>>> GetAllVenues()
         {
-            var response = await _venueService.GetAllVenues();
+            var response = await _mediator.Send(new GetVenueListQuery());
 
             if(response.Data == null)
             {
@@ -32,7 +37,7 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<Venue>>> GetSingleVenue(int id)
         {
-            var response = await _venueService.GetVenueById(id);
+            var response = await _mediator.Send(new GetVenueByIdQuery(id));
 
             if (response.Data == null)
             {
@@ -45,37 +50,33 @@ namespace OnlineMovieReservationSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<ServiceResponse<Venue>>> AddVenue(VenueDto newVenue)
         {
-            /*var response = await _venueService.AddVenue(newVenue);
+            var response = await _mediator.Send(new AddVenueCommand(newVenue));
 
             if (response.Data == null)
             {
                 return BadRequest(response);
             }
             
-            return Ok(response);*/
-
-            throw new NotImplementedException();
+            return Ok(response);
         }
 
         [HttpPost("multiple")]
         public async Task<ActionResult<ServiceResponse<List<Venue>>>> AddMultipleVenues(List<VenueDto> newVenues)
         {
-            /*var response = await _venueService.AddMultipleVenues(newVenues);
+            var response = await _mediator.Send(new AddMultipleVenuesCommand(newVenues));
 
             if (response.Data == null)
             {
                 return BadRequest(response);
             }
 
-            return Ok(response);*/
-
-            throw new NotImplementedException();
+            return Ok(response);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ServiceResponse<Venue>>> DeleteVenue(int id)
         {
-            var response = await _venueService.DeleteVenue(id);
+            var response = await _mediator.Send(new DeleteVenueCommand(id));
 
             if (response.Data == null)
             {

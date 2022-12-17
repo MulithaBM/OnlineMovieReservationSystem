@@ -25,7 +25,9 @@ namespace OnlineMovieReservationSystem.Services.MovieService
             try
             {
                 var movie = _mapper.Map<Movie>(newMovie);
+                
                 await _context.Movies.AddAsync(movie);
+                await _context.SaveChangesAsync();
 
                 //await _context.Movies.AddAsync(newMovie);
                 //await _context.SaveChangesAsync();
@@ -49,7 +51,9 @@ namespace OnlineMovieReservationSystem.Services.MovieService
             try
             {
                 var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
+                
                 await _context.Movies.AddRangeAsync(movies);
+                await _context.SaveChangesAsync();
 
                 //await _context.Movies.AddRangeAsync(newMovies);
                 //await _context.SaveChangesAsync();
