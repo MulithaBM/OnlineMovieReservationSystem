@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineMovieReservationSystem.Domain.Models;
-using OnlineMovieReservationSystem.Domain.Services;
 using OnlineMovieReservationSystem.Domain.Dtos.Venue;
 using MediatR;
 using OnlineMovieReservationSystem.Application.Queries.VenueQueries;
@@ -13,12 +12,10 @@ namespace OnlineMovieReservationSystem.Controllers
     public class VenueController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IVenueService _venueService;
 
-        public VenueController(IMediator mediator, IVenueService venueService)
+        public VenueController(IMediator mediator)
         {
             _mediator = mediator;
-            _venueService = venueService;
         }
 
         [HttpGet]
