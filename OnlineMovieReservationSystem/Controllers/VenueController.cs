@@ -23,7 +23,7 @@ namespace OnlineMovieReservationSystem.Controllers
         {
             var response = await _mediator.Send(new GetVenueListQuery());
 
-            if(response.Data == null)
+            if (response.Data == null)
             {
                 return NotFound(response);
             }

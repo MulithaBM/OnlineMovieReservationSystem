@@ -146,6 +146,76 @@ namespace OnlineMovieReservationSystem.Application.Services.SessionService
             return response;
         }
 
+        public async Task<ServiceResponse<Session>> UpdateSession(UpdateSessionDto sessionChanges)
+        {
+            var response = new ServiceResponse<Session>();
+
+            try
+            {
+                var session = await _context.Sessions
+                    .Include(s => s.Movie)
+                    .Include(s => s.Venue)
+                    .FirstOrDefaultAsync(s => s.Id == sessionChanges.Id);
+
+                if (session == null)
+                {
+                    response.Success = false;
+                    response.Message = "Session not found";
+
+                    return response;
+                }
+
+                if ((session.Movie.Id != sessionChanges.MovieId) || (session.Venue.Id != sessionChanges.VenueId))
+                {
+                    Console.WriteLine(3);
+                    if (session.Movie.Id != sessionChanges.MovieId)
+                    {
+                        var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == sessionChanges.MovieId);
+
+                        if (movie == null)
+                        {
+                            response.Success = false;
+                            response.Message = "Movie not found";
+
+                            return response;
+                        }
+
+                        session.Movie = movie;
+                    }
+                    Console.WriteLine(4);
+
+                    if (session.Venue.Id != sessionChanges.VenueId)
+                    {
+                        var venue = await _context.Venues.FirstOrDefaultAsync(v => v.Id == sessionChanges.VenueId);
+
+                        if (venue == null)
+                        {
+                            response.Success = false;
+                            response.Message = "Venue not found";
+
+                            return response;
+                        }
+
+                        session.Venue = venue;
+                    }
+                    Console.WriteLine(5);
+
+                    await _context.SaveChangesAsync();
+                }
+                Console.WriteLine(6);
+
+                response.Data = session;
+                Console.WriteLine(7);
+            }
+            catch (Exception e)
+            {
+                response.Success = false;
+                response.Message = e.Message;
+            }
+
+            return response;
+        }
+
         public async Task<ServiceResponse<Session>> DeleteSession(int id)
         {
             var response = new ServiceResponse<Session>();
@@ -157,7 +227,7 @@ namespace OnlineMovieReservationSystem.Application.Services.SessionService
                     .Include(s => s.Venue)
                     .FirstOrDefaultAsync(s => s.Id == id);
 
-                if(session == null)
+                if (session == null)
                 {
                     response.Success = false;
                     response.Message = "Session not found";

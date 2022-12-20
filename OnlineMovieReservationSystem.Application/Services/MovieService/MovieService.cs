@@ -125,7 +125,7 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
             {
                 var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
 
-                if(movie == null)
+                if (movie == null)
                 {
                     response.Success = false;
                     response.Message = "Movie not found";

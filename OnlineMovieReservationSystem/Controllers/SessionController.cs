@@ -23,7 +23,7 @@ namespace OnlineMovieReservationSystem.Controllers
         {
             var response = await _mediator.Send(new GetSessionListQuery());
 
-            if(response.Data == null)
+            if (response.Data == null)
             {
                 return NotFound(response);
             }
@@ -61,6 +61,19 @@ namespace OnlineMovieReservationSystem.Controllers
         public async Task<ActionResult<ServiceResponse<List<Session>>>> AddMultipleSessions(List<SessionDto> newSessions)
         {
             var response = await _mediator.Send(new AddMultipleSessionsCommand(newSessions));
+
+            if (response.Data == null)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<Session>>> UpdateSession(UpdateSessionDto sessionChanges)
+        {
+            var response = await _mediator.Send(new UpdateSessionCommand(sessionChanges));
 
             if (response.Data == null)
             {

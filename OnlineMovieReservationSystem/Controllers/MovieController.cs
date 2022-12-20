@@ -15,17 +15,17 @@ namespace OnlineMovieReservationSystem.Controllers
     {
         private readonly IMediator _mediator;
 
-        public MovieController(IMediator mediator) 
+        public MovieController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Movie>>>> GetAllMovies() 
+        public async Task<ActionResult<ServiceResponse<List<Movie>>>> GetAllMovies()
         {
             var response = await _mediator.Send(new GetMovieListQuery());
 
-            if(response.Data == null)
+            if (response.Data == null)
             {
                 return NotFound(response);
             }

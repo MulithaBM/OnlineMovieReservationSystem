@@ -124,7 +124,7 @@ namespace OnlineMovieReservationSystem.Application.Services.VenueService
             {
                 var venue = await _context.Venues.FirstOrDefaultAsync(v => v.Id == id);
 
-                if(venue == null)
+                if (venue == null)
                 {
                     response.Success = false;
                     response.Message = "Venue not found";
