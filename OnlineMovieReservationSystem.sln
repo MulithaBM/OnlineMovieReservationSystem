@@ -5,9 +5,11 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineMovieReservationSystem.Api", "OnlineMovieReservationSystem\OnlineMovieReservationSystem.Api.csproj", "{1774DCD6-7EAA-4E50-9C12-23A814141704}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineMovieReservationSystem.Domain", "OnlineMovieReservationSystem.Domain\OnlineMovieReservationSystem.Domain.csproj", "{C8D7CCE7-2347-424F-9D54-F70D8D5F39F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineMovieReservationSystem.Domain", "OnlineMovieReservationSystem.Domain\OnlineMovieReservationSystem.Domain.csproj", "{C8D7CCE7-2347-424F-9D54-F70D8D5F39F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineMovieReservationSystem.Application", "OnlineMovieReservationSystem.Application\OnlineMovieReservationSystem.Application.csproj", "{EB579D01-1A9D-4E82-B4E3-E05712C2645C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineMovieReservationSystem.Application", "OnlineMovieReservationSystem.Application\OnlineMovieReservationSystem.Application.csproj", "{EB579D01-1A9D-4E82-B4E3-E05712C2645C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineMovieReservationSystem.Data", "OnlineMovieReservationSystem.Data\OnlineMovieReservationSystem.Data.csproj", "{4DC8208B-8635-4F7F-9600-B80C016B70ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{EB579D01-1A9D-4E82-B4E3-E05712C2645C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB579D01-1A9D-4E82-B4E3-E05712C2645C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB579D01-1A9D-4E82-B4E3-E05712C2645C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DC8208B-8635-4F7F-9600-B80C016B70ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DC8208B-8635-4F7F-9600-B80C016B70ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DC8208B-8635-4F7F-9600-B80C016B70ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DC8208B-8635-4F7F-9600-B80C016B70ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

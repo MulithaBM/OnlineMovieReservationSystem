@@ -167,7 +167,6 @@ namespace OnlineMovieReservationSystem.Application.Services.SessionService
 
                 if ((session.Movie.Id != sessionChanges.MovieId) || (session.Venue.Id != sessionChanges.VenueId))
                 {
-                    Console.WriteLine(3);
                     if (session.Movie.Id != sessionChanges.MovieId)
                     {
                         var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == sessionChanges.MovieId);
@@ -182,7 +181,6 @@ namespace OnlineMovieReservationSystem.Application.Services.SessionService
 
                         session.Movie = movie;
                     }
-                    Console.WriteLine(4);
 
                     if (session.Venue.Id != sessionChanges.VenueId)
                     {
@@ -198,14 +196,11 @@ namespace OnlineMovieReservationSystem.Application.Services.SessionService
 
                         session.Venue = venue;
                     }
-                    Console.WriteLine(5);
 
                     await _context.SaveChangesAsync();
                 }
-                Console.WriteLine(6);
 
                 response.Data = session;
-                Console.WriteLine(7);
             }
             catch (Exception e)
             {
