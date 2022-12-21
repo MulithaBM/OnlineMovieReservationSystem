@@ -29,6 +29,17 @@ const Movies = () => {
                             <Link to={"/movies/" + movie.id} className="btn btn-primary">
                                 View
                             </Link>
+                            <br />
+                            {/* delete button */}
+                            <Link to={"/movies/" + movie.id + "/edit"} className="btn btn-primary">
+                                Edit
+                            </Link>
+                            <br />
+                            {/* edit button */}
+                            <Link to={"/movies/" + movie.id + "/delete"} className="btn btn-primary">
+                                Delete
+                            </Link>
+                            
                         </div>
                     </div>
                 </div>
