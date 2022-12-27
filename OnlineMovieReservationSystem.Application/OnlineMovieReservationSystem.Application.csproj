@@ -11,9 +11,11 @@
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OnlineMovieReservationSystem.Data\OnlineMovieReservationSystem.Persistence.csproj" />
     <ProjectReference Include="..\OnlineMovieReservationSystem.Domain\OnlineMovieReservationSystem.Domain.csproj" />
   </ItemGroup>
 

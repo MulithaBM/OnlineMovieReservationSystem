@@ -2,12 +2,12 @@
 {
     public class MovieDto
     {
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string Director { get; set; } = string.Empty;
-        public string Cast { get; set; } = string.Empty;
-        public string Type { get; set; } = string.Empty;
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Director { get; set; }
+        public string Cast { get; set; }
+        public string Type { get; set; }
         public int Duration { get; set; }
-        public string ReleaseDate { get; set; } = string.Empty;
+        public string ReleaseDate { get; set; }
     }
 }

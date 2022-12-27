@@ -2,10 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using OnlineMovieReservationSystem.Domain.Services;
 using OnlineMovieReservationSystem.Application;
-using OnlineMovieReservationSystem.Application.Data;
 using OnlineMovieReservationSystem.Application.Services.MovieService;
 using OnlineMovieReservationSystem.Application.Services.SessionService;
 using OnlineMovieReservationSystem.Application.Services.VenueService;
+using OnlineMovieReservationSystem.Persistence.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,15 +27,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMediatR(typeof(MediatorEntryPoint).Assembly);
 
-/*builder.Services.AddDbContext<DataContext>(options =>
+builder.Services.AddDbContext<DataContext>(options =>
 {
     options.EnableDetailedErrors();
     options.EnableSensitiveDataLogging();
     //string connection = Configuration.GetConnectionString("DefaultConnection");
-    options.UseNpgsql(@"Server=localhost;Port=5432;Database=OMRS;User Id=postgres;Password=calceyPG");
- });*/
+    options.UseNpgsql(@"Server=localhost;Port=5432;Database=OMRS;User Id=postgres;Password=calceyPG", b => b.MigrationsAssembly("OnlineMovieReservationSystem.Persistence"));
+ });
 
-builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("MovieReservationDb"));
+//builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("MovieReservationDb"));
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 

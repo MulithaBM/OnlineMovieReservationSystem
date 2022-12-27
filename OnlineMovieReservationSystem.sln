@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineMovieReservationSyste
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineMovieReservationSystem.Application", "OnlineMovieReservationSystem.Application\OnlineMovieReservationSystem.Application.csproj", "{EB579D01-1A9D-4E82-B4E3-E05712C2645C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineMovieReservationSystem.Data", "OnlineMovieReservationSystem.Data\OnlineMovieReservationSystem.Data.csproj", "{4DC8208B-8635-4F7F-9600-B80C016B70ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineMovieReservationSystem.Persistence", "OnlineMovieReservationSystem.Data\OnlineMovieReservationSystem.Persistence.csproj", "{4DC8208B-8635-4F7F-9600-B80C016B70ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
