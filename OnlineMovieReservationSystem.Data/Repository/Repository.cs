@@ -1,47 +1,55 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OnlineMovieReservationSystem.Domain.Repository;
+using OnlineMovieReservationSystem.Persistence.Data;
 
 namespace OnlineMovieReservationSystem.Persistence.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly DbContext _context;
-        public Repository(DbContext context) 
+        protected readonly DataContext _context;
+        private readonly DbSet<TEntity> dbSet;
+
+        public Repository(DataContext context) 
         {
             _context = context;
+            dbSet = _context.Set<TEntity>();
         }
-        public void Add(TEntity entity)
+
+        public async Task<IEnumerable<TEntity>> Get()
+        {
+            return await dbSet.ToListAsync();
+        }
+
+        public async Task<TEntity> GetById(int id)
+        {
+            return await dbSet.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<TEntity>> Add(TEntity entity)
+        {
+            await dbSet.AddAsync(entity);
+            return await dbSet.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TEntity>> AddRange(IEnumerable<TEntity> entities)
+        {
+            await dbSet.AddRangeAsync(entities);
+            return await dbSet.ToListAsync();
+        }
+
+        public Task<TEntity> Update(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public void AddRange(IEnumerable<TEntity> entities)
+        public Task<TEntity> Remove(TEntity entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<TEntity> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public TEntity GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveRange(IEnumerable<TEntity> entities)
-        {
-            throw new NotImplementedException();
+            //if (_context.Entry(entity).State == EntityState.Detached)
+            //{
+            //    dbSet.Attach(entity);
+            //}
+            dbSet.Remove(entity);
+            return Task.FromResult(entity);
         }
     }
 }

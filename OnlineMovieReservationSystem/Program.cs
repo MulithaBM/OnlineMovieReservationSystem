@@ -6,6 +6,8 @@ using OnlineMovieReservationSystem.Application.Services.MovieService;
 using OnlineMovieReservationSystem.Application.Services.SessionService;
 using OnlineMovieReservationSystem.Application.Services.VenueService;
 using OnlineMovieReservationSystem.Persistence.Data;
+using OnlineMovieReservationSystem.Domain.Repository;
+using OnlineMovieReservationSystem.Persistence.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +44,10 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IVenueService, VenueService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
+
+//builder.RegisterType<MovieRepository>()
+//    .As<IOrderRepository>()
+//    .InstancePerLifetimeScope();
 
 var app = builder.Build();
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Persistence.Configurations;
-using System.Reflection.Metadata;
 
 namespace OnlineMovieReservationSystem.Persistence.Data
 {
@@ -10,6 +9,10 @@ namespace OnlineMovieReservationSystem.Persistence.Data
         public DataContext(DbContextOptions options) : base(options) 
         {
             
+        }
+
+        public DataContext()
+        {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
