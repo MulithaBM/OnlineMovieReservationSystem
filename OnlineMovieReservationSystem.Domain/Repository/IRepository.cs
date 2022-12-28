@@ -4,9 +4,9 @@
     {
         Task<TEntity> GetById(int id);
         Task<IEnumerable<TEntity>> Get();
-        Task<IEnumerable<TEntity>> Add(TEntity entity);
-        Task<IEnumerable<TEntity>> AddRange(IEnumerable<TEntity> entities);
+        Task Add(TEntity entity);
+        Task AddRange(IEnumerable<TEntity> entities);
         Task<TEntity> Update(TEntity entity);
-        Task<TEntity> Remove(TEntity entity);
+        Task Remove(TEntity entity);
     }
 }

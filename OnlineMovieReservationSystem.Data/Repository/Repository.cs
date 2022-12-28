@@ -25,16 +25,14 @@ namespace OnlineMovieReservationSystem.Persistence.Repository
             return await dbSet.FindAsync(id);
         }
 
-        public async Task<IEnumerable<TEntity>> Add(TEntity entity)
+        public async Task Add(TEntity entity)
         {
             await dbSet.AddAsync(entity);
-            return await dbSet.ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> AddRange(IEnumerable<TEntity> entities)
+        public async Task AddRange(IEnumerable<TEntity> entities)
         {
             await dbSet.AddRangeAsync(entities);
-            return await dbSet.ToListAsync();
         }
 
         public Task<TEntity> Update(TEntity entity)
@@ -42,7 +40,7 @@ namespace OnlineMovieReservationSystem.Persistence.Repository
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> Remove(TEntity entity)
+        public Task Remove(TEntity entity)
         {
             //if (_context.Entry(entity).State == EntityState.Detached)
             //{

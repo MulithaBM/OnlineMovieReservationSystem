@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using OnlineMovieReservationSystem.Persistence.Data;
 using OnlineMovieReservationSystem.Domain.Dtos.Movie;
 using OnlineMovieReservationSystem.Domain.Models;
@@ -15,8 +14,8 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
 
         public MovieService(DataContext context, IMapper mapper)
         {
-            _mapper = mapper;
             unitOfWork = new(context);
+            _mapper = mapper;
         }
 
         public async Task<ServiceResponse<List<Movie>>> GetAllMovies()
@@ -81,8 +80,10 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
             {
                 var movie = _mapper.Map<Movie>(newMovie);
 
-                response.Data = (List<Movie>?) await unitOfWork.MovieRepository.Add(movie);
+                await unitOfWork.MovieRepository.Add(movie);
                 unitOfWork.Save();
+
+                response.Data = (List<Movie>)await unitOfWork.MovieRepository.Get();
             }
             catch (Exception e)
             {
@@ -101,8 +102,10 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
             {
                 var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
 
-                response.Data = (List<Movie>?)await unitOfWork.MovieRepository.AddRange(movies);
+                await unitOfWork.MovieRepository.AddRange(movies);
                 unitOfWork.Save();
+
+                response.Data = (List<Movie>) await unitOfWork.MovieRepository.Get();
             }
             catch (Exception e)
             {
@@ -129,8 +132,10 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
                     return response;
                 }
 
-                response.Data = await unitOfWork.MovieRepository.Remove(movie);
+                await unitOfWork.MovieRepository.Remove(movie);
                 unitOfWork.Save();
+
+                response.Data = movie;
             }
             catch (Exception e)
             {

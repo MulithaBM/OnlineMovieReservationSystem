@@ -7,18 +7,38 @@ namespace OnlineMovieReservationSystem.Persistence.Repository
     {
         private readonly DataContext _context;
         private Repository<Movie> _movieRepository;
+        private Repository<Venue> _venueRepository;
+        private Repository<Session> _sessionRepository;
 
         public UnitOfWork(DataContext context)
         {
             _context = context;
         }
+
         public Repository<Movie> MovieRepository
         {
             get
             {
                 _movieRepository ??= new Repository<Movie>(_context);
-
                 return _movieRepository;
+            }
+        }
+
+        public Repository<Venue> VenueRepository
+        {
+            get
+            {
+                _venueRepository ??= new Repository<Venue>(_context);
+                return _venueRepository;
+            }
+        }
+
+        public Repository<Session> SessionRepository
+        {
+            get
+            {
+                _sessionRepository ??= new Repository<Session>(_context);
+                return _sessionRepository;
             }
         }
 
