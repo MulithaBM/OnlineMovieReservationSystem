@@ -2,21 +2,26 @@
 using OnlineMovieReservationSystem.Application.Commands.MovieCommands;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
+using OnlineMovieReservationSystem.Persistence.Repositories;
 
 namespace OnlineMovieReservationSystem.Application.Handlers.MovieHandlers
 {
     public class AddMovieHandler : IRequestHandler<AddMovieCommand, ServiceResponse<List<Movie>>>
     {
         private readonly IMovieService _movieService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AddMovieHandler(IMovieService movieService)
+        public AddMovieHandler(IMovieService movieService, IUnitOfWork unitOfWork)
         {
             _movieService = movieService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ServiceResponse<List<Movie>>> Handle(AddMovieCommand request, CancellationToken cancellationToken)
         {
-            return await _movieService.AddMovie(request.Movie);
+            var movies = await _movieService.AddMovie(request.Movie);
+            await _unitOfWork.SaveChangesAsync();
+            return movies;
         }
     }
 }

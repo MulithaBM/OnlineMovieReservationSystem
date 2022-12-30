@@ -2,12 +2,14 @@
 using OnlineMovieReservationSystem.Application.Commands.VenueCommands;
 using OnlineMovieReservationSystem.Domain.Models;
 using OnlineMovieReservationSystem.Domain.Services;
+using OnlineMovieReservationSystem.Persistence.Repositories;
 
 namespace OnlineMovieReservationSystem.Application.Handlers.VenueHandlers
 {
     public class AddVenueHandler : IRequestHandler<AddVenueCommand, ServiceResponse<List<Venue>>>
     {
         private readonly IVenueService _venueService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AddVenueHandler(IVenueService venueService)
         {
