@@ -20,6 +20,7 @@ namespace OnlineMovieReservationSystem.Application.Handlers.MovieHandlers
         public async Task<ServiceResponse<List<Movie>>> Handle(AddMovieCommand request, CancellationToken cancellationToken)
         {
             var movies = await _movieService.AddMovie(request.Movie);
+            Console.WriteLine(_unitOfWork.GetHashCode());
             await _unitOfWork.SaveChangesAsync();
             return movies;
         }

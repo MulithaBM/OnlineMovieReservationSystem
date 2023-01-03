@@ -13,7 +13,6 @@ namespace OnlineMovieReservationSystem.Persistence.Repositories.MovieRepository
         public MovieCommandRepository(IDataContext context)
         {
             _context = context;
-            //dbSet = _context.Set<Movie>();
             dbSet = _context.Movies;
         }
 

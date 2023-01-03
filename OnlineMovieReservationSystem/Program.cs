@@ -7,6 +7,10 @@ using OnlineMovieReservationSystem.Application.Services.SessionService;
 using OnlineMovieReservationSystem.Application.Services.VenueService;
 using OnlineMovieReservationSystem.Persistence.Data;
 using OnlineMovieReservationSystem.Persistence.Repositories;
+using OnlineMovieReservationSystem.Domain.Repositories.MovieRepository;
+using OnlineMovieReservationSystem.Persistence.Repositories.MovieRepository;
+using OnlineMovieReservationSystem.Domain.Repositories.VenueRepository;
+using OnlineMovieReservationSystem.Persistence.Repositories.VenueRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +40,9 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(@"Server=localhost;Port=5432;Database=OMRS;User Id=postgres;Password=calceyPG", b => b.MigrationsAssembly("OnlineMovieReservationSystem.Persistence"));
  });
 
+builder.Services.AddScoped<IDataContext, DataContext>();
+builder.Services.AddScoped<IUnitOfWork, DataContext>();
+
 //builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("MovieReservationDb"));
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -44,13 +51,12 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IVenueService, VenueService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+// Repositories
 
-builder.Services.AddScoped<IDataContext, DataContext>();
-
-//builder.RegisterType<MovieRepository>()
-//    .As<IOrderRepository>()
-//    .InstancePerLifetimeScope();
+builder.Services.AddScoped<IMovieQueryRepository, MovieQueryRepository>();
+builder.Services.AddScoped<IMovieCommandRepository, MovieCommandRepository>();
+builder.Services.AddScoped<IVenueQueryRepository, VenueQueryRepository>();
+builder.Services.AddScoped<IVenueCommandRepository, VenueCommandRepository>();
 
 var app = builder.Build();
 

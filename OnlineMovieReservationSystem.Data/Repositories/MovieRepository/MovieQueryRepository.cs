@@ -18,12 +18,12 @@ namespace OnlineMovieReservationSystem.Persistence.Repositories.MovieRepository
 
         public async Task<IEnumerable<Movie>> Get()
         {
-            return await dbSet.ToListAsync();
+            return await dbSet.AsNoTracking().ToListAsync();
         }
 
         public async Task<Movie> GetById(int id)
         {
-            return await dbSet.FindAsync(id);
+            return await dbSet.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
         }
     }
 }

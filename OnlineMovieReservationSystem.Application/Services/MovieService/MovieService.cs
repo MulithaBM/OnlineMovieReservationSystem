@@ -1,20 +1,25 @@
 ﻿using AutoMapper;
 using OnlineMovieReservationSystem.Domain.Dtos.Movie;
 using OnlineMovieReservationSystem.Domain.Models;
+using OnlineMovieReservationSystem.Domain.Repositories.MovieRepository;
 using OnlineMovieReservationSystem.Domain.Services;
-using OnlineMovieReservationSystem.Persistence.Repositories;
+using OnlineMovieReservationSystem.Persistence.Data;
 
 namespace OnlineMovieReservationSystem.Application.Services.MovieService
 {
     public class MovieService : IMovieService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMovieQueryRepository _movieQueryRepository;
+        private readonly IMovieCommandRepository _movieCommandRepository;
         private readonly IMapper _mapper;
+        private readonly IDataContext _c;
 
-        public MovieService(IUnitOfWork unitOfWork, IMapper mapper)
+        public MovieService(IMovieQueryRepository movieQueryRepository, IMovieCommandRepository movieCommandRepository, IMapper mapper, IDataContext c)
         {
-            _unitOfWork = unitOfWork;
+            _movieQueryRepository = movieQueryRepository;
+            _movieCommandRepository = movieCommandRepository;
             _mapper = mapper;
+            _c = c;
         }
 
         public async Task<ServiceResponse<List<Movie>>> GetAllMovies()
@@ -23,7 +28,7 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
 
             try
             {
-                var movies = (List<Movie>)await _unitOfWork.MovieQueryRepository.Get();
+                var movies = (List<Movie>) await _movieQueryRepository.Get();
 
                 if (!movies.Any())
                 {
@@ -50,7 +55,7 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
 
             try
             {
-                var movie = await _unitOfWork.MovieQueryRepository.GetById(id);
+                var movie = await _movieQueryRepository.GetById(id);
 
                 if (movie == null)
                 {
@@ -73,15 +78,18 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
 
         public async Task<ServiceResponse<List<Movie>>> AddMovie(MovieDto newMovie)
         {
+            Console.WriteLine(_c.GetHashCode());
             var response = new ServiceResponse<List<Movie>>();
+
+            Console.WriteLine(newMovie.Title);
  
             try
             {
                 var movie = _mapper.Map<Movie>(newMovie);
 
-                await _unitOfWork.MovieCommandRepository.Add(movie);
+                await _movieCommandRepository.Add(movie);
 
-                response.Data = (List<Movie>)await _unitOfWork.MovieQueryRepository.Get();
+                response.Data = (List<Movie>)await _movieQueryRepository.Get();
             }
             catch (Exception e)
             {
@@ -100,9 +108,9 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
             {
                 var movies = newMovies.Select(m => _mapper.Map<Movie>(m)).ToList();
 
-                await _unitOfWork.MovieCommandRepository.AddRange(movies);
+                await _movieCommandRepository.AddRange(movies);
 
-                response.Data = (List<Movie>) await _unitOfWork.MovieQueryRepository.Get();
+                response.Data = (List<Movie>) await _movieQueryRepository.Get();
             }
             catch (Exception e)
             {
@@ -119,7 +127,7 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
 
             try
             {
-                var movie = await _unitOfWork.MovieQueryRepository.GetById(id);
+                var movie = await _movieQueryRepository.GetById(id);
 
                 if (movie == null)
                 {
@@ -129,7 +137,7 @@ namespace OnlineMovieReservationSystem.Application.Services.MovieService
                     return response;
                 }
 
-                await _unitOfWork.MovieCommandRepository.Remove(movie);
+                await _movieCommandRepository.Remove(movie);
 
                 response.Data = movie;
             }
